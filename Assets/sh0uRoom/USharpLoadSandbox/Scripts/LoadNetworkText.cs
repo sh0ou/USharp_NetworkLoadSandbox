@@ -18,7 +18,10 @@ public class LoadNetworkText : UdonSharpBehaviour
     [SerializeField] public bool isLoadSync;
 
     [Header("(op)InputField")]
-    [SerializeField] VRCUrlInputField inputField;
+    [SerializeField] private VRCUrlInputField inputField;
+
+    [Header("(op)URL隠蔽文字数"), Tooltip("指定した文字数より後のURL文字列を隠蔽します\nDefault = 40")]
+    [SerializeField] private int hideUrlLength = 40;
 
     /// <summary>URL先のデータが読み込み済みかどうか</summary>
     [UdonSynced] private bool isUrlLoaded = false;
@@ -70,12 +73,28 @@ public class LoadNetworkText : UdonSharpBehaviour
     {
         VRCStringDownloader.LoadUrl(targetUrl, (IUdonEventReceiver)this);
 
-        Debug.Log($"[<color=yellow>LoadNetworkText</color>]Loading... / {targetUrl}");
+        if (hideUrlLength > targetUrl.Get().Length)
+        {
+            Debug.Log($"[<color=yellow>LoadNetworkText</color>]Loading... / {"https://********************"}");
+        }
+        else
+        {
+            var hideUrl = targetUrl.Get().Substring(0, hideUrlLength);
+            Debug.Log($"[<color=yellow>LoadNetworkText</color>]Loading... / {hideUrl + "********************"}");
+        }
     }
 
     public override void OnStringLoadSuccess(IVRCStringDownload download)
     {
-        Debug.Log($"[<color=green>LoadNetworkText</color>]Complete / {targetUrl}");
+        if (hideUrlLength > download.Url.ToString().Length)
+        {
+            Debug.Log($"[<color=green>LoadNetworkText</color>]Complete / {"https://********************"}");
+        }
+        else
+        {
+            var hideUrl = download.Url.ToString().Substring(0, hideUrlLength);
+            Debug.Log($"[<color=green>LoadNetworkText</color>]Complete / {hideUrl + "********************"}");
+        }
 
         text_output.text = download.Result;
         isUrlLoaded = true;
@@ -83,7 +102,15 @@ public class LoadNetworkText : UdonSharpBehaviour
 
     public override void OnStringLoadError(IVRCStringDownload result)
     {
-        Debug.Log($"[<color=magenta>LoadNetworkText</color>]{result.ErrorCode} / {targetUrl}\n{result.Error}");
+        if (hideUrlLength > targetUrl.Get().Length)
+        {
+            Debug.Log($"[<color=magenta>LoadNetworkText</color>]{result.ErrorCode} / {"https://********************"}\n{result.Error}");
+        }
+        else
+        {
+            var hideUrl = targetUrl.Get().Substring(0, hideUrlLength);
+            Debug.Log($"[<color=magenta>LoadNetworkText</color>]{result.ErrorCode} / {targetUrl}\n{result.Error}");
+        }
     }
 
     public override void OnPlayerJoined(VRCPlayerApi player)
