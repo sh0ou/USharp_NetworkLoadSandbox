@@ -19,9 +19,6 @@ public class LoadNetworkImage : UdonSharpBehaviour
     [Header("(op)InputField")]
     [SerializeField] VRCUrlInputField inputField;
 
-    [Header("(op)url隠蔽文字数"), Tooltip("指定した文字数以降のURLを[*]で隠します\nDefault = 40")]
-    [SerializeField] private int hideUrlLength = 40;
-
     [Header("(op)テクスチャ詳細設定")]
     [SerializeField] TextureInfo textureInfo;
 
@@ -79,14 +76,12 @@ public class LoadNetworkImage : UdonSharpBehaviour
         VRCImageDownloader downloader = new VRCImageDownloader();
         downloader.DownloadImage(targetUrl, mat_output, (IUdonEventReceiver)this, textureInfo);
 
-        var hideUrl = targetUrl.ToString().Substring(0, hideUrlLength);
-        Debug.Log($"[<color=yellow>LoadNetworkImage</color>]Loading... / {hideUrl + "**********"}");
+        Debug.Log($"[<color=yellow>LoadNetworkImage</color>]Loading... / {targetUrl}");
     }
 
     public override void OnImageLoadSuccess(IVRCImageDownload result)
     {
-        var hideUrl = result.Url.ToString().Substring(0, hideUrlLength);
-        Debug.Log($"[<color=green>LoadNetworkImage</color>]{result.State} / {hideUrl + "**********"}");
+        Debug.Log($"[<color=green>LoadNetworkImage</color>]{result.State} / {targetUrl}");
 
         if (result.State == VRCImageDownloadState.Complete)
         {
@@ -100,8 +95,7 @@ public class LoadNetworkImage : UdonSharpBehaviour
 
     public override void OnImageLoadError(IVRCImageDownload result)
     {
-        var hideUrl = result.Url.ToString().Substring(0, hideUrlLength);
-        Debug.Log($"[<color=magenta>LoadNetworkImage</color>]{result.Error} / {hideUrl + "**********"} / {result.ErrorMessage}");
+        Debug.Log($"[<color=magenta>LoadNetworkImage</color>]{result.Error} / {targetUrl} / {result.ErrorMessage}");
     }
 
     public override void OnPlayerJoined(VRCPlayerApi player)

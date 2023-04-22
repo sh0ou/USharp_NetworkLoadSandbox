@@ -20,9 +20,6 @@ public class LoadNetworkText : UdonSharpBehaviour
     [Header("(op)InputField")]
     [SerializeField] VRCUrlInputField inputField;
 
-    [Header("(op)url隠蔽文字数"), Tooltip("指定した文字数以降のURLを[*]で隠します\nDefault = 40")]
-    [SerializeField] private int hideUrlLength = 40;
-
     /// <summary>URL先のデータが読み込み済みかどうか</summary>
     [UdonSynced] private bool isUrlLoaded = false;
 
@@ -73,14 +70,12 @@ public class LoadNetworkText : UdonSharpBehaviour
     {
         VRCStringDownloader.LoadUrl(targetUrl, (IUdonEventReceiver)this);
 
-        var hideUrl = targetUrl.ToString().Substring(0, hideUrlLength);
-        Debug.Log($"[<color=yellow>LoadNetworkText</color>]Loading... / {hideUrl + "**********"}");
+        Debug.Log($"[<color=yellow>LoadNetworkText</color>]Loading... / {targetUrl}");
     }
 
     public override void OnStringLoadSuccess(IVRCStringDownload download)
     {
-        var hideUrl = download.Url.ToString().Substring(0, hideUrlLength);
-        Debug.Log($"[<color=green>LoadNetworkText</color>]Complete / {hideUrl + "**********"}");
+        Debug.Log($"[<color=green>LoadNetworkText</color>]Complete / {targetUrl}");
 
         text_output.text = download.Result;
         isUrlLoaded = true;
@@ -88,8 +83,7 @@ public class LoadNetworkText : UdonSharpBehaviour
 
     public override void OnStringLoadError(IVRCStringDownload result)
     {
-        var hideUrl = result.Url.ToString().Substring(0, hideUrlLength);
-        Debug.Log($"[<color=magenta>LoadNetworkText</color>]{result.ErrorCode} / {hideUrl + "**********"}\n{result.Error}");
+        Debug.Log($"[<color=magenta>LoadNetworkText</color>]{result.ErrorCode} / {targetUrl}\n{result.Error}");
     }
 
     public override void OnPlayerJoined(VRCPlayerApi player)
