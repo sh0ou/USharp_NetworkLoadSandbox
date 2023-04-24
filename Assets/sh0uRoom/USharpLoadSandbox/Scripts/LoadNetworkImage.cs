@@ -1,4 +1,5 @@
-﻿using UdonSharp;
+﻿using TMPro;
+using UdonSharp;
 using UnityEngine;
 using VRC.SDK3.Components;
 using VRC.SDK3.Image;
@@ -19,6 +20,9 @@ public class LoadNetworkImage : UdonSharpBehaviour
     [Header("(op)InputField")]
     [SerializeField] VRCUrlInputField inputField;
 
+    [Header("(op)ロード状況表示テキスト")]
+    [SerializeField] TextMeshProUGUI text_loadInfo;
+
     [Header("(op)テクスチャ詳細設定")]
     [SerializeField] TextureInfo textureInfo;
 
@@ -38,6 +42,11 @@ public class LoadNetworkImage : UdonSharpBehaviour
                 LoadURLImage();
             }
         }
+    }
+
+    private void Update()
+    {
+
     }
 
     /// <summary>
@@ -72,6 +81,8 @@ public class LoadNetworkImage : UdonSharpBehaviour
         isUrlLoaded = false;
 
         mat_output.mainTexture = default;
+
+        if (text_loadInfo) text_loadInfo.text = "Ready";
     }
 
     public void OnLoadURLImage()
@@ -79,6 +90,7 @@ public class LoadNetworkImage : UdonSharpBehaviour
         VRCImageDownloader downloader = new VRCImageDownloader();
         downloader.DownloadImage(targetUrl, mat_output, (IUdonEventReceiver)this, textureInfo);
 
+        //ログ出力
         if (hideUrlLength > targetUrl.Get().Length)
         {
             Debug.Log($"[<color=yellow>LoadNetworkImage</color>]Loading... / {"https://********************"}");
@@ -88,10 +100,13 @@ public class LoadNetworkImage : UdonSharpBehaviour
             var hideUrl = targetUrl.Get().Substring(0, hideUrlLength);
             Debug.Log($"[<color=yellow>LoadNetworkImage</color>]Loading... / {hideUrl + "********************"}");
         }
+
+        if (text_loadInfo) text_loadInfo.text = "Loading...";
     }
 
     public override void OnImageLoadSuccess(IVRCImageDownload result)
     {
+        //ログ出力
         if (hideUrlLength > targetUrl.Get().Length)
         {
             Debug.Log($"[<color=green>LoadNetworkImage</color>]{result.State} / {"https://********************"}");
@@ -110,10 +125,13 @@ public class LoadNetworkImage : UdonSharpBehaviour
                 isUrlLoaded = true;
             }
         }
+
+        if (text_loadInfo) text_loadInfo.text = result.State.ToString();
     }
 
     public override void OnImageLoadError(IVRCImageDownload result)
     {
+        //ログ出力
         if (hideUrlLength > targetUrl.Get().Length)
         {
             Debug.Log($"[<color=magenta>LoadNetworkImage</color>]{result.Error} / {"https://********************"} / {result.ErrorMessage}");
@@ -123,6 +141,8 @@ public class LoadNetworkImage : UdonSharpBehaviour
             var hideUrl = targetUrl.Get().ToString().Substring(0, hideUrlLength);
             Debug.Log($"[<color=magenta>LoadNetworkImage</color>]{result.Error} / {hideUrl + "********************"} / {result.ErrorMessage}");
         }
+
+        if (text_loadInfo) text_loadInfo.text = result.ErrorMessage;
     }
 
     public override void OnPlayerJoined(VRCPlayerApi player)

@@ -111,6 +111,8 @@ public class LoadNetworkText : UdonSharpBehaviour
             var hideUrl = targetUrl.Get().Substring(0, hideUrlLength);
             Debug.Log($"[<color=magenta>LoadNetworkText</color>]{result.ErrorCode} / {targetUrl}\n{result.Error}");
         }
+
+        text_output.text = result.Error;
     }
 
     public override void OnPlayerJoined(VRCPlayerApi player)
