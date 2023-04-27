@@ -9,7 +9,8 @@ using VRC.Udon.Common.Interfaces;
 public class LoadNetworkText : UdonSharpBehaviour
 {
     [SerializeField, UdonSynced] public VRCUrl targetUrl;
-    [SerializeField] private TextMeshProUGUI text_output;
+    [SerializeField] public TextMeshProUGUI text_output;
+    [HideInInspector] public string outputText;
 
     [Header("有効時自動ロード")]
     [SerializeField] private bool isLoadOnEnable;
@@ -24,10 +25,14 @@ public class LoadNetworkText : UdonSharpBehaviour
     [SerializeField] private int hideUrlLength = 40;
 
     /// <summary>URL先のデータが読み込み済みかどうか</summary>
-    [UdonSynced] private bool isUrlLoaded = false;
+    [UdonSynced, HideInInspector] public bool isUrlLoaded = false;
 
     private void OnEnable()
     {
+        if (!text_output)
+        {
+            Debug.LogWarning($"[<color=yellow>LoadNetworkText</color>]出力先TextObjが指定されていません。値の保存のみ行われます - ObjName: {gameObject.name}");
+        }
         if (isLoadOnEnable)
         {
             if (targetUrl.Get().Length >= 1)
@@ -66,7 +71,10 @@ public class LoadNetworkText : UdonSharpBehaviour
     {
         isUrlLoaded = false;
 
-        text_output.text = default;
+        if (text_output)
+        {
+            text_output.text = default;
+        }
     }
 
     public void OnLoadURLText()
@@ -96,7 +104,11 @@ public class LoadNetworkText : UdonSharpBehaviour
             Debug.Log($"[<color=green>LoadNetworkText</color>]Complete / {hideUrl + "********************"}");
         }
 
-        text_output.text = download.Result;
+        outputText = download.Result;
+        if (text_output)
+        {
+            text_output.text = outputText;
+        }
         isUrlLoaded = true;
     }
 
@@ -112,7 +124,10 @@ public class LoadNetworkText : UdonSharpBehaviour
             Debug.Log($"[<color=magenta>LoadNetworkText</color>]{result.ErrorCode} / {targetUrl}\n{result.Error}");
         }
 
-        text_output.text = result.Error;
+        if (text_output)
+        {
+            text_output.text = result.Error;
+        }
     }
 
     public override void OnPlayerJoined(VRCPlayerApi player)
