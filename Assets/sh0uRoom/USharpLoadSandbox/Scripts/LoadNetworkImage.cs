@@ -26,8 +26,8 @@ public class LoadNetworkImage : UdonSharpBehaviour
     [Header("(op)テクスチャ詳細設定")]
     [SerializeField] TextureInfo textureInfo;
 
-    [Header("(op)URL隠蔽文字数"), Tooltip("指定した文字数より後のURL文字列を隠蔽します\nDefault = 40")]
-    [SerializeField] private int hideUrlLength = 40;
+    [Header("(op)URL隠蔽文字数"), Tooltip("指定した文字数より後のURL文字列を隠蔽します\nDefault = 10")]
+    [SerializeField] private int hideUrlLength = 10;
 
     /// <summary>URL先のデータが読み込み済みかどうか</summary>
     [UdonSynced] private bool isUrlLoaded = false;

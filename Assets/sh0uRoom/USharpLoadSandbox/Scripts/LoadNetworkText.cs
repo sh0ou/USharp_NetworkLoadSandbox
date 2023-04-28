@@ -8,7 +8,9 @@ using VRC.Udon.Common.Interfaces;
 
 public class LoadNetworkText : UdonSharpBehaviour
 {
+    [Header("読み込むURL")]
     [SerializeField, UdonSynced] public VRCUrl targetUrl;
+
     [SerializeField] public TextMeshProUGUI text_output;
     [HideInInspector] public string outputText;
 
@@ -21,8 +23,8 @@ public class LoadNetworkText : UdonSharpBehaviour
     [Header("(op)InputField")]
     [SerializeField] private VRCUrlInputField inputField;
 
-    [Header("(op)URL隠蔽文字数"), Tooltip("指定した文字数より後のURL文字列を隠蔽します\nDefault = 40")]
-    [SerializeField] private int hideUrlLength = 40;
+    [Header("(op)URL隠蔽文字数"), Tooltip("指定した文字数より後のURL文字列を隠蔽します\nDefault = 10")]
+    [SerializeField] private int hideUrlLength = 10;
 
     /// <summary>URL先のデータが読み込み済みかどうか</summary>
     [UdonSynced, HideInInspector] public bool isUrlLoaded = false;

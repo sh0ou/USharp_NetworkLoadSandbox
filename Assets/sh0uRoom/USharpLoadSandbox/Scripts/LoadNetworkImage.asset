@@ -567,7 +567,7 @@ MonoBehaviour:
     - Name: tooltip
       Entry: 1
       Data: "\u6307\u5B9A\u3057\u305F\u6587\u5B57\u6570\u3088\u308A\u5F8C\u306EURL\u6587\u5B57\u5217\u3092\u96A0\u853D\u3057\u307E\u3059\nDefault
-        = 40"
+        = 10"
     - Name: 
       Entry: 8
       Data: 

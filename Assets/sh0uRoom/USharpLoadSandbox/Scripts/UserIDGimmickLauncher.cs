@@ -9,7 +9,7 @@ using VRC.SDKBase.Editor.Attributes;
 public class UserIDGimmickLauncher : UdonSharpBehaviour
 {
     [Header("参照するテキストスクリプト")]
-    [HelpBox("テキストファイル内のVRChatIDはカンマ（,）区切りで指定して下さい", HelpBoxAttribute.MessageType.Info)]
+    [HelpBox("LoadNetworkTextのtargetURLからテキストを取得します\nテキストファイル内のVRChatIDはカンマ（,）区切りで指定して下さい", HelpBoxAttribute.MessageType.Info)]
     [SerializeField] LoadNetworkText LoadNetworkText;
     private string[] targetUserIDs;
 
