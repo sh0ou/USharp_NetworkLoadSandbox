@@ -8,10 +8,13 @@ using VRC.SDKBase.Editor.Attributes;
 /// </summary>
 public class UserIDGimmickLauncher : UdonSharpBehaviour
 {
+    [Header("参照するテキストスクリプト")]
+    [HelpBox("テキストファイル内のVRChatIDはカンマ（,）区切りで指定して下さい", HelpBoxAttribute.MessageType.Info)]
     [SerializeField] LoadNetworkText LoadNetworkText;
     private string[] targetUserIDs;
 
-    [HelpBox("[アクション設定]\nアタッチ状況に応じてアクションを決定します\n使用するアクションのみアタッチして下さい\n*用途は変数名にマウスをあてることで表示されます", HelpBoxAttribute.MessageType.Info)]
+    [Header("アクション設定")]
+    [HelpBox("アタッチ状況に応じてアクションを決定します\n使用するアクションのみアタッチして下さい\n*用途は変数名にマウスをあてることで表示されます", HelpBoxAttribute.MessageType.Info)]
     [SerializeField, Tooltip("テレポート - 対象位置")] private Transform targetTeleportPos;
     [SerializeField, Tooltip("オブジェクト表示切替 - 対象Obj")] private GameObject targetShowObj;
     [SerializeField, Tooltip("アニメーション - Animator")] private Animator targetAnimator;
