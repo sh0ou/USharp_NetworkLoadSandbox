@@ -1,4 +1,5 @@
 ﻿using TMPro;
+using System;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDK3.Components;
@@ -106,6 +107,13 @@ public class LoadNetworkText : UdonSharpBehaviour
             Debug.Log($"[<color=green>LoadNetworkText</color>]Complete / {hideUrl + "********************"}");
         }
 
+        if(outputText.Contains("<!DOCTYPE html>"))
+        {
+            Debug.LogError($"[<color=magenta>LoadNetworkText</color>]HTMLタグが含まれているため、読み込みを中止しました");
+            return;
+        }
+
+        //結果出力
         outputText = download.Result;
         if (text_output)
         {

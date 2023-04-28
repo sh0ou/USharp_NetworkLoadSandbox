@@ -11,7 +11,8 @@ public class UserIDGimmickLauncher : UdonSharpBehaviour
     [Header("参照するテキストスクリプト")]
     [HelpBox("LoadNetworkTextのtargetURLからテキストを取得します\nテキストファイル内のVRChatIDはカンマ（,）区切りで指定して下さい", HelpBoxAttribute.MessageType.Info)]
     [SerializeField] LoadNetworkText LoadNetworkText;
-    private string[] targetUserIDs;
+    [Header("(debug)ID取得結果")]
+    [SerializeField] private string[] targetUserIDs;
 
     [Header("アクション設定")]
     [HelpBox("アタッチ状況に応じてアクションを決定します\n使用するアクションのみアタッチして下さい\n*用途は変数名にマウスをあてることで表示されます", HelpBoxAttribute.MessageType.Info)]
